@@ -15,9 +15,10 @@ public class Desenho extends JComponent {
          
     }
     public void paint(Graphics g){
-        algAnalitic(g,10,10,350,350);//45°
-        algAnalitic(g,10,10,350,10);//0°
-        algAnalitic(g,10,10,10,350);//90°
+        //algAnalitic(g,10,10,350,350);//45°
+       // algAnalitic(g,10,10,350,10);//0°
+        //algAnalitic(g,10,10,10,350);//90°
+        algAnalitic(g,10,10,312,125);//22°
         
     }
     
@@ -37,8 +38,7 @@ public class Desenho extends JComponent {
         
         for(x = xi; x<=xf; x++) {
             y = (int) (m * x + b);
-            putPixel(g,x,y);
-            putPixel(g,y,x);    
+            putPixel(g,x,y); 
         }
     }
 }
