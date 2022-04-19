@@ -1,6 +1,6 @@
 
 
-package alganalitic;
+package todosalgLinha;
 /**
  *
  * @author Ronaldo
@@ -20,9 +20,13 @@ public class Janela extends JFrame {
         //this.setTitle("Algoritmo DDA");
         
        //codigo para rodar Algoritmo Bres
-        this.add(new algbres());
-        this.setTitle("Algoritmo Bres");
-        this.setSize(400,400);
+       // this.add(new algbres());
+       // this.setTitle("Algoritmo Bres");
+        
+       //codigo unindo analitic, DDA e bres
+       this.add(new TodosLinha());
+       this.setTitle("Algoritmo de Geração de Linhas - Todos");
+        this.setSize(300,300);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);

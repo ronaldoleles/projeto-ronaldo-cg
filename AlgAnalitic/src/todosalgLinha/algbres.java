@@ -1,5 +1,5 @@
 
-package alganalitic;
+package todosalgLinha;
 
 import java.awt.Graphics;
 import javax.swing.JComponent;

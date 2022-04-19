@@ -1,5 +1,5 @@
 
-package alganalitic;
+package todosalgLinha;
 
 /**
  *
