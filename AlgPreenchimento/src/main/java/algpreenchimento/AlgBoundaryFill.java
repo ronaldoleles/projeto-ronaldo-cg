@@ -9,11 +9,10 @@ import javax.swing.JComponent;
  *
  * @author RONALDO
  */
-public class AlgVarred extends JComponent{
-    
+public class AlgBoundaryFill extends JComponent {
     int pixels[][];
     
-    public AlgVarred() {
+    public AlgBoundaryFill() {
         pixels = new int[300][300];
     }
     
@@ -22,32 +21,35 @@ public class AlgVarred extends JComponent{
         g.setColor(Color.red);
         poligono(g);
         g.setColor(Color.blue);
-        preVarred(g,10,10,250,250);
-        g.setColor(Color.red);
-        poligono(g);
+        preBF(g,150,150);
         
         
     }
     
-    public void preVarred(Graphics g, int xmin, int ymin, int xmax, int ymax) {
-        boolean liga;
-        
-        for (int y=ymin-1; y<=ymax+1; y++) {
-            liga = false;
-            for(int x=xmin-1; x<=xmax+1; x++) {
-                if (liga) putPixel(g,x,y);
-                if((getPixel(g,x+1,y) > 0)&(getPixel(g,x+2,y)<1)) liga = !liga;
-                
-                
-            }
-        }
+     public void poligono(Graphics g) {
+        algBres(g,150,150,200,150);
+        algBres(g,200,150,200,200);
+        algBres(g,200,200,150,200);
+        algBres(g,150,200,150,150);
     }
     
-    public void poligono(Graphics g) {
-        algBres(g,50,50,250,50);
-        algBres(g,250,50,250,250);
-        algBres(g,250,250,50,250);
-        algBres(g,50,250,50,50);
+     public void preBF(Graphics g, int x, int y) {
+         if (getPixel(g,x,y)== 0) {
+             putPixel(g,x,y);
+             preBF(g,x+1,y);
+             preBF(g,x-1,y);
+             preBF(g,x,y+1);
+             preBF(g,x,y-1);
+         }
+     }
+    
+    public void putPixel(Graphics g, int x, int y) {
+        g.drawLine(x, y, x, y);
+        pixels[x-1][y-1] = 1;
+    }
+    
+    public int getPixel(Graphics g, int x, int y) {
+         return pixels[x-1][y-1];
     }
     
     public void algBres(Graphics g, int xi, int yi, int xf, int yf) {
@@ -81,14 +83,5 @@ public class AlgVarred extends JComponent{
              if(yerr>dist) {yerr = yerr - dist; yi = yi + incY;}
          }
         
-    }
-    
-    public void putPixel(Graphics g, int x, int y) {
-        g.drawLine(x, y, x, y);
-        pixels[x-1][y-1] = 1;
-    }
-    
-    public int getPixel(Graphics g, int x, int y) {
-         return pixels[x-1][y-1];
     }
 }
