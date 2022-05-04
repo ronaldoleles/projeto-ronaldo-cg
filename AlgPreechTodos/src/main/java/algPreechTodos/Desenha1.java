@@ -28,7 +28,7 @@ public class Desenha1 extends JComponent{
     
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.red);
+        g.setColor(Color.green);
         
         g.fillPolygon(p);
         g.setColor(Color.blue);
