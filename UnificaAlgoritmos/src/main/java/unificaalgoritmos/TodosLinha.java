@@ -12,7 +12,7 @@ import javax.swing.JComponent;
 
 
 public class TodosLinha extends JComponent{
-  int oPcao;
+  int oPcao=0;
     TodosLinha(int opcao) {
         oPcao = opcao;
     }
@@ -22,7 +22,7 @@ public class TodosLinha extends JComponent{
       
         
     if(oPcao == 1){
-        g.setColor(Color.red);
+        g.setColor(Color.green);
         algAnalitic(g,50,50,150,150); //45º
         algAnalitic(g,50,50,150,50); // 0º
         algAnalitic(g,50,50,50,150); //90º

@@ -17,7 +17,7 @@ import javax.swing.JMenuItem;
 
 public class Janela extends JFrame implements ActionListener{
    JMenuItem analitico,dda,bresenham;
-   int opcao;
+   int opcao=0;
     @SuppressWarnings("OverridableMethodCallInConstructor") 
     public Janela(){
         //cria barra de menu
@@ -100,7 +100,7 @@ public class Janela extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     
      if (e.getSource() == analitico) {
-               opcao =1;
+              opcao =1;
               this.add(new TodosLinha(opcao)); 
               revalidate();
               System.out.println("analitico");
@@ -108,12 +108,12 @@ public class Janela extends JFrame implements ActionListener{
       if (e.getSource() == dda) {
             opcao =2;  
             this.add(new TodosLinha(opcao)); 
-              revalidate();
-              System.out.println("DDA");
+             revalidate();
+             System.out.println("DDA");
         }
        if (e.getSource() == bresenham) {
               opcao =3;
-                this.add(new TodosLinha(opcao)); 
+              this.add(new TodosLinha(opcao)); 
               revalidate();
               System.out.println("Bresenham");
         }
