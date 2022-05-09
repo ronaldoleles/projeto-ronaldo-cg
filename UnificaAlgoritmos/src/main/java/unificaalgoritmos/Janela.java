@@ -16,7 +16,8 @@ import javax.swing.JMenuItem;
 
 
 public class Janela extends JFrame implements ActionListener{
-   JMenuItem analitico;
+   JMenuItem analitico,dda,bresenham;
+   int opcao;
     @SuppressWarnings("OverridableMethodCallInConstructor") 
     public Janela(){
         //cria barra de menu
@@ -45,9 +46,9 @@ public class Janela extends JFrame implements ActionListener{
         
         analitico = new JMenuItem("Analitico");
         linhas.add(analitico);
-        JMenuItem dda = new JMenuItem("DDA");
+        dda = new JMenuItem("DDA");
         linhas.add(dda);
-        JMenuItem bresenham = new JMenuItem("Bresenham");
+        bresenham = new JMenuItem("Bresenham");
         linhas.add(bresenham);
         
         JMenuItem varredura = new JMenuItem("Varredura");
@@ -84,10 +85,11 @@ public class Janela extends JFrame implements ActionListener{
         //this.setTitle("Algoritmo de Geração de Linhas - Todos");
         
         analitico.addActionListener(this);
+        dda.addActionListener(this);
+        bresenham.addActionListener(this);
         
         
-        
-        this.setSize(1000,1000);
+        this.setSize(300,300);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -98,9 +100,22 @@ public class Janela extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent e) {
     
      if (e.getSource() == analitico) {
-
-            new TodosLinha();
-            //System.out.println("analitico");
+               opcao =1;
+              this.add(new TodosLinha(opcao)); 
+              revalidate();
+              System.out.println("analitico");
+        }
+      if (e.getSource() == dda) {
+            opcao =2;  
+            this.add(new TodosLinha(opcao)); 
+              revalidate();
+              System.out.println("DDA");
+        }
+       if (e.getSource() == bresenham) {
+              opcao =3;
+                this.add(new TodosLinha(opcao)); 
+              revalidate();
+              System.out.println("Bresenham");
         }
     }
 }
