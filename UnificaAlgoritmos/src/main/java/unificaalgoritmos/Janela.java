@@ -5,15 +5,19 @@ package unificaalgoritmos;
  *
  * @author RONALDO
  */
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 
-public class Janela extends JFrame {
-    
-    
+public class Janela extends JFrame implements ActionListener{
+   JMenuItem analitico;
+    @SuppressWarnings("OverridableMethodCallInConstructor") 
     public Janela(){
         //cria barra de menu
         JMenuBar menuBar = new JMenuBar();
@@ -39,7 +43,7 @@ public class Janela extends JFrame {
         coresMenu.add(verde);
         coresMenu.add(azul);
         
-        JMenuItem analitico = new JMenuItem("Analitico");
+        analitico = new JMenuItem("Analitico");
         linhas.add(analitico);
         JMenuItem dda = new JMenuItem("DDA");
         linhas.add(dda);
@@ -70,15 +74,33 @@ public class Janela extends JFrame {
        //codigo para rodar Algoritmo Bres
        // this.add(new algbres());
        // this.setTitle("Algoritmo Bres");
+
+//String resposta = JOptionPane.showInputDialog("")
         
-       //codigo unindo analitic, DDA e bres
-       //this.add(new TodosLinha());
-      // this.setTitle("Algoritmo de Geração de Linhas - Todos");
+       
+    
+        //codigo unindo analitic, DDA e bres
+       // this.add(new TodosLinha());
+        //this.setTitle("Algoritmo de Geração de Linhas - Todos");
         
-      
-        this.setSize(500,300);
+        analitico.addActionListener(this);
+        
+        
+        
+        this.setSize(1000,1000);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
+          System.out.println("analitico");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    
+     if (e.getSource() == analitico) {
+
+            new TodosLinha();
+            //System.out.println("analitico");
+        }
     }
 }
