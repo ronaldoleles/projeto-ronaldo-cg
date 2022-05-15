@@ -13,20 +13,27 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class UnificaAlg extends JFrame
         implements MouseListener, ActionListener {
 
     JLabel mousePosition;
-    JMenuItem analitico, dda, bresenham, verde, azul, vermelho;
+    JMenuItem analitico, dda, bresenham, verde, azul, vermelho, varredura, boundaryFill, analiseGeometrica, parametrica, incremental, bresenhamCirc;
     int opcao = 0;
+    int qtdFaces = 0;
     int recarrega = 0;
     int cor, cont = 0;
-    int x1;
-    int y1;
-    int x2 = 0, y2 = 0;
     int[] pontos = new int[4];
+    int[] pontosPoligono = new int[4];
+    int minX = 10000;
+    int minY = 10000;
+    int maxX = 1;
+    int maxY = 1;
+    int teste=1;
+    int maior[] = new int[2];
+    int aux1 = 0, aux2 = 0;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public void Janela() {
@@ -65,18 +72,18 @@ public class UnificaAlg extends JFrame
         bresenham = new JMenuItem("Bresenham");
         linhas.add(bresenham);
 
-        JMenuItem varredura = new JMenuItem("Varredura");
+        varredura = new JMenuItem("Varredura");
         poligonos.add(varredura);
-        JMenuItem boundaryFill = new JMenuItem("BoundaryFill");
+        boundaryFill = new JMenuItem("BoundaryFill");
         poligonos.add(boundaryFill);
-        JMenuItem analiseGeometrica = new JMenuItem("Analise Geométrica");
+        analiseGeometrica = new JMenuItem("Analise Geométrica");
         poligonos.add(analiseGeometrica);
 
-        JMenuItem parametrica = new JMenuItem("Parametrica");
+        parametrica = new JMenuItem("Parametrica");
         circulos.add(parametrica);
-        JMenuItem incremental = new JMenuItem("Incremental com simetria");
+        incremental = new JMenuItem("Incremental com simetria");
         circulos.add(incremental);
-        JMenuItem bresenhamCirc = new JMenuItem("Bresenham");
+        bresenhamCirc = new JMenuItem("Bresenham");
         circulos.add(bresenhamCirc);
 
         azul.addActionListener(this);
@@ -85,6 +92,12 @@ public class UnificaAlg extends JFrame
         analitico.addActionListener(this);
         dda.addActionListener(this);
         bresenham.addActionListener(this);
+        varredura.addActionListener(this);
+        boundaryFill.addActionListener(this);
+        analiseGeometrica.addActionListener(this);
+        parametrica.addActionListener(this);
+        incremental.addActionListener(this);
+        bresenhamCirc.addActionListener(this);
 
         this.setSize(1000, 700);
         this.setLocationRelativeTo(null);
@@ -96,7 +109,6 @@ public class UnificaAlg extends JFrame
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        System.out.println("opcao" + opcao);
         if (recarrega == 1) {
             this.dispose();
             this.revalidate();
@@ -130,6 +142,43 @@ public class UnificaAlg extends JFrame
             cor = 3;
             System.out.println("azul");
         }
+        if (e.getSource() == varredura) {
+            cont = 0;
+            String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces");
+            qtdFaces = Integer.parseInt(qtd);
+            opcao = 4;
+            System.out.println("varredura");
+            System.out.println("faces:" + qtdFaces);
+        }
+        if (e.getSource() == boundaryFill) {
+            cont = 0;
+            String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces");
+            qtdFaces = Integer.parseInt(qtd);
+            opcao = 5;
+            System.out.println("Boundary Fill");
+            System.out.println("faces:" + qtdFaces);
+        }
+        if (e.getSource() == analiseGeometrica) {
+            cont = 0;
+            String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces");
+            qtdFaces = Integer.parseInt(qtd);
+            opcao = 6;
+            System.out.println("Analise Geometrica");
+            System.out.println("faces:" + qtdFaces);
+        }
+        if (e.getSource() == parametrica) {
+            opcao = 7;
+            System.out.println("Parametrica");
+        }
+        if (e.getSource() == incremental) {
+            opcao = 8;
+            System.out.println("Incremental");
+        }
+        if (e.getSource() == bresenhamCirc) {
+            opcao = 9;
+            System.out.println("Bresenham Circulo");
+        }
+        System.out.println("opcao: " + opcao);
 
     }
 
@@ -153,24 +202,117 @@ public class UnificaAlg extends JFrame
 
     @Override
     public void mousePressed(MouseEvent e) {
-        cont++;
-        if (cont == 1) {
-            pontos[0] = e.getX() - 8;
-            pontos[1] = e.getY() - 54;
+
+        if (opcao == 1 || opcao == 2 || opcao == 3) {
+            cont++;
+            if (cont == 1) {
+                pontos[0] = e.getX() - 8;
+                pontos[1] = e.getY() - 54;
+                
+            }
+            if (cont == 2) {
+                pontos[2] = e.getX() - 8;
+                pontos[3] = e.getY() - 54;
+                System.out.println("ponto inicial: [x1,y1][" + pontos[0] + "," + pontos[1] + "]");
+                System.out.println("ponto final : [x2,y2][" + pontos[2] + "," + pontos[3] + "]");
+
+                revalidate();
+                this.add(new TodosLinha(opcao, pontos[0], pontos[1], pontos[2], pontos[3], cor));
+                revalidate();
+
+                cont = 0;
+            }
         }
-        if (cont == 2) {
-            pontos[2] = e.getX() - 8;
-            pontos[3] = e.getY() - 54;
-            System.out.println("ponto inicial: [x1,y1][" + pontos[0] + "," + pontos[1] + "]");
-            System.out.println("ponto final : [x2,y2][" + pontos[2] + "," + pontos[3] + "]");
 
-            revalidate();
-            this.add(new TodosLinha(opcao, pontos[0], pontos[1], pontos[2], pontos[3], cor));
-            revalidate();
+        if (opcao == 4 || opcao == 5 || opcao == 6) {
 
-            cont = 0;
+            cont++;
+            System.out.println("cont: " + cont);
+            if (cont == 1) {
+                pontosPoligono[0] = e.getX() - 8;
+                pontosPoligono[1] = e.getY() - 54;
+                if(pontosPoligono[0]<minX){
+                    minX = pontosPoligono[0];
+                }
+                if(pontosPoligono[1]<minY){
+                    minY = pontosPoligono[1];
+                }
+
+            }
+            if (cont == 2) {
+                pontosPoligono[2] = e.getX() - 8;
+                pontosPoligono[3] = e.getY() - 54;
+                aux1 = pontosPoligono[2];
+                aux2 = pontosPoligono[3];
+                if(pontosPoligono[2]<minX){
+                    minX = pontosPoligono[2];
+                }
+                if(pontosPoligono[3]<minY){
+                    minY = pontosPoligono[3];
+                }
+                if(pontosPoligono[2]>maxX){
+                    maxX = pontosPoligono[2];
+                }
+                if(pontosPoligono[3]>maxY){
+                    maxY = pontosPoligono[3];
+                }
+                
+                revalidate();
+                this.add(new AlgVarredura(qtdFaces, pontosPoligono[0], pontosPoligono[1], pontosPoligono[2], pontosPoligono[3],teste,teste,teste,teste));
+                revalidate();
+
+            }
+            if (cont > 2) {
+
+                pontosPoligono[2] = e.getX() - 8;
+                pontosPoligono[3] = e.getY() - 54;
+                
+                if(pontosPoligono[2]<minX){
+                    minX = pontosPoligono[2];
+                }
+                if(pontosPoligono[3]<minY){
+                    minY = pontosPoligono[3];
+                }
+                if(pontosPoligono[2]>maxX){
+                    maxX = pontosPoligono[2];
+                }
+                if(pontosPoligono[3]>maxY){
+                    maxY = pontosPoligono[3];
+                }
+                
+                
+                revalidate();
+                this.add(new AlgVarredura(qtdFaces, aux1, aux2, pontosPoligono[2], pontosPoligono[3],teste,teste,teste,teste));
+                aux1 = pontosPoligono[2];
+                aux2 = pontosPoligono[3];
+//                
+//                if(aux1<minX){
+//                    minX = aux1;
+//                }
+//                if(aux2<minY){
+//                    minY = aux2;
+//                }
+//                if(aux1>maxX){
+//                    maxX = aux1;
+//                }
+//                if(aux2>maxY){
+//                    maxY = aux2;
+//                }
+                revalidate();
+
+            }
+            if (cont == qtdFaces) {
+                System.out.println("F principal xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+                revalidate();
+                this.add(new AlgVarredura(qtdFaces, pontosPoligono[2], pontosPoligono[3], pontosPoligono[0], pontosPoligono[1],minX,minY,maxX,maxY));
+                
+                revalidate();
+            }
+
         }
+        if (opcao == 7 || opcao == 8 || opcao == 9) {
 
+        }
     }
 
     @Override
