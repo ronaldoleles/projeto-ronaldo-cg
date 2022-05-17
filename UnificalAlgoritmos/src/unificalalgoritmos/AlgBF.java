@@ -1,17 +1,19 @@
 package unificalalgoritmos;
 
-import javax.swing.JComponent;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JComponent;
+
 /**
  *
- * @author RONALDO
+ * @author Ronaldo
  */
-public class AlgVarredura extends JComponent {
+public class AlgBF extends JComponent {
 
+//    private int px1 = 25, px2 = 125, px3 = 110, px4 = 100,
+//            py1 = 25, py2 = 25, py3 = 100, py4 = 100;
     private int pixels[][];
-    int qtdfaces;
     int px1 = 0;
     int py1 = 0;
     int px2 = 0;
@@ -20,45 +22,52 @@ public class AlgVarredura extends JComponent {
     int miY;
     int maX;
     int maY;
-    int aux1 = 0, aux2 = 0;
-    int cont;
-    //;
-//    int px1 = 50, px2 = 250, px3 = 210, px4 = 200,
-//            py1 = 50, py2 = 50, py3 = 200, py4 = 200;
 
-    public AlgVarredura(int qtdFaces, int x1, int y1, int x2, int y2, int minX, int minY, int maxX, int maxY) {
-        qtdfaces = qtdFaces;
-
+    public AlgBF(int x1, int y1, int x2, int y2, int minX, int minY, int maxX, int maxY) {
+        
         px1 = x1;
         py1 = y1;
-
         px2 = x2;
         py2 = y2;
-
+        
         miX = minX;
-
         miY = minY;
-
         maX = maxX;
-
         maY = maxY;
-
         pixels = new int[1000][700];
-
+       
     }
 
     @Override
     public void paint(Graphics g) {
+
         g.setColor(Color.red);
         poligono(g);
         if (miX != 1 && miY != 1 && maX != 1 && maY != 1) {
             g.setColor(Color.blue);
-            System.out.println("PreVarred xMin =[" + miX + "]yMin =[" + miY + "]xMax =[" + maX + "]yMax =[" + maY + "]");
-
-            preVarred(g, miX, miY, maX, maY);
+           
+          //  preBF(g, maX, maY);
         }
-        g.setColor(Color.red);
-        poligono(g);
+    }
+
+    public void poligono(Graphics g) {
+        repaint();
+        algBres(g, px1, py1, px2, py2);
+        // algBres(g, px2, py2, px3, py3);
+        //  algBres(g, px3, py3, px4, py4);
+        // algBres(g, px4, py4, px1, py1);
+    }
+
+    public void preBF(Graphics g, int x, int y) {
+        if (getPixel(g, x, y) == 0) {
+            putPixel(g, x, y);
+
+            preBF(g, x + 1, y);
+            preBF(g, x - 1, y);
+            preBF(g, x, y + 1);
+            preBF(g, x, y - 1);
+
+        }
     }
 
     public void putPixel(Graphics g, int x, int y) {
@@ -70,34 +79,10 @@ public class AlgVarredura extends JComponent {
         return pixels[x - 1][y - 1];
     }
 
-    private void poligono(Graphics g) {
-
-        algBres(g, px1, py1, px2, py2);
-
-    }
-
-    private void preVarred(Graphics g, int xmin, int ymin, int xmax, int ymax) {
-
-        boolean liga;
-
-        for (int y = ymin - 1; y <= ymax + 1; y++) {
-            liga = false;
-            for (int x = xmin - 1; x <= xmax + 1; x++) {
-                if (liga) {
-                    putPixel(g, x, y);
-                }
-
-                if ((getPixel(g, x + 1, y) > 0) & (getPixel(g, x + 2, y) < 1)) {
-                    liga = !liga;
-                }
-            }
-        }
-
-    }
-
-    private void algBres(Graphics g, int xi, int yi, int xf, int yf) {
-
-        int xerr = 0, yerr = 0, dx, dy, incX, incY, dist;
+    public void algBres(Graphics g, int xi, int yi, int xf, int yf) {
+        int t, dist;
+        int xerr = 0, yerr = 0, dx, dy;
+        int incX, incY;
 
         dx = xf - xi;
         dy = yf - yi;
