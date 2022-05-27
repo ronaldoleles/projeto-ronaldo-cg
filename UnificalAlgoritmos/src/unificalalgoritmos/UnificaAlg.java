@@ -24,7 +24,7 @@ public class UnificaAlg extends JFrame
     int opcao = 0;
     int qtdFaces = 0;
     int recarrega = 0;
-    int cor, cont = 0;
+    int cor, cont = 0, cont2 = 0, cont3 = 0;
     int[] pontos = new int[4];
     int[] pontosPoX;
     int[] pontosPoY;
@@ -36,9 +36,10 @@ public class UnificaAlg extends JFrame
     int maior[] = new int[2];
     int aux1 = 0, aux2 = 0;
     int aux3 = 0, aux4 = 0;
-    int raio=0;
-    int xCirc=0;
-    int yCirc=0;
+    int raio = 0;
+    int xCirc = 0;
+    int yCirc = 0;
+    boolean mouse = false;
 
     @SuppressWarnings("OverridableMethodCallInConstructor")
     public void Janela() {
@@ -152,7 +153,6 @@ public class UnificaAlg extends JFrame
             String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces:");
 
             qtdFaces = Integer.parseInt(qtd);
-            qtdFaces = qtdFaces + 2;
             opcao = 4;
             System.out.println("varredura");
             System.out.println("faces:" + qtdFaces);
@@ -163,7 +163,6 @@ public class UnificaAlg extends JFrame
             cont = 0;
             String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces:");
             qtdFaces = Integer.parseInt(qtd);
-            qtdFaces = qtdFaces + 2;
             opcao = 5;
             System.out.println("Boundary Fill");
             System.out.println("faces:" + qtdFaces);
@@ -174,7 +173,6 @@ public class UnificaAlg extends JFrame
             cont = 0;
             String qtd = JOptionPane.showInputDialog(null, "Quantidade de faces:");
             qtdFaces = Integer.parseInt(qtd);
-            qtdFaces = qtdFaces + 2;
             opcao = 6;
             System.out.println("Analise Geometrica");
             System.out.println("faces:" + qtdFaces);
@@ -247,309 +245,414 @@ public class UnificaAlg extends JFrame
         }
 
         if (opcao == 4) {
+            if (cont < qtdFaces) {
 
-            cont++;
-            System.out.println("cont: " + cont);
-            //pontos iniciais do poligono
-            if (cont == 1) {
-                pontosPoX[0] = e.getX() - 8;
-                pontosPoY[0] = e.getY() - 54;
-                aux1 = pontosPoX[0];
-                aux2 = pontosPoY[0];
+                if (mouse == false) {
+                    System.out.println("1: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    System.out.println("2: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    mouse = false;
+                } else {
+                    mouse = true;
+                }
 
-                // System.out.println("["+pontosPoX[0]+","+pontosPoY[0]+"]"); 
             }
-            if (cont == 2) {
+            if (cont == qtdFaces) {
+                System.out.println("cont: " + cont);
+                System.out.println("cont2: " + cont2);
 
-                pontosPoX[1] = aux1;
-                pontosPoY[1] = aux2;
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-
-                System.out.println("[" + aux1 + "," + aux2 + "," + pontosPoX[cont] + "," + pontosPoY[cont] + "]");
-                revalidate();
-                this.add(new AlgVarredura(qtdFaces, aux1, aux2, pontosPoX[cont], pontosPoY[cont], teste, teste, teste, teste));
-                revalidate();
-                aux3 = pontosPoX[cont];
-                aux4 = pontosPoY[cont];
-            }
-            if (cont > 2) {
-
-                pontosPoX[cont] = aux3;
-                pontosPoY[cont] = aux4;
-                pontosPoX[cont + 1] = e.getX() - 8;
-                pontosPoY[cont + 1] = e.getY() - 54;
-
-                revalidate();
-                this.add(new AlgVarredura(qtdFaces, aux3, aux4, pontosPoX[cont + 1], pontosPoY[cont + 1], teste, teste, teste, teste));
-                revalidate();
-                System.out.println("[" + aux3 + "," + aux4 + "," + pontosPoX[cont + 1] + "," + pontosPoY[cont + 1] + "]");
-                aux3 = pontosPoX[cont + 1];
-                aux4 = pontosPoY[cont + 1];
-            }
-
-            //ponto final do poligono
-            if (cont + 2 == qtdFaces) {
-                System.out.println("aquiioi");
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-                aux3 = pontosPoX[cont]; //xfinal
-                aux4 = pontosPoY[cont];//yfinal
-
-                for (int i = 0; i < cont + 2; i++) {
-
-                    //System.out.println("x,y["+pontosPoX[cont]+","+pontosPoY[cont]+"]");
-                    //verifica menor
-                    if (pontosPoX[i] < minX) {
+                for (int i = 0; i < cont; i++) {
+                    aux1 = pontosPoX[0];
+                    aux2 = pontosPoY[0];
+                    // minimo x1
+                    if (minX > pontosPoX[i]) {
                         minX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] < minY) {
+                    //minimo x2
+                    if (minX > pontosPoX[i]) {
+                        minX = pontosPoX[i];
+                    }
+
+                    //minimo y1
+                    if (minY > pontosPoY[i]) {
                         minY = pontosPoY[i];
                     }
-                    //verifica maior
-                    if (pontosPoX[i] > maxX) {
+                    //minimo y2
+                    if (minY > pontosPoY[i]) {
+                        minY = pontosPoY[i];
+                    }
+
+                    //max x1
+                    if (maxX < pontosPoX[i]) {
                         maxX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] > maxY) {
+                    //max x2
+                    if (maxX < pontosPoX[i]) {
+                        maxX = pontosPoX[i];
+                    }
+                    //max y1
+                    if (maxY < pontosPoY[i]) {
                         maxY = pontosPoY[i];
                     }
+                    //max y2
+                    if (maxY < pontosPoY[i]) {
+                        maxY = pontosPoY[i];
+                    }
+
                 }
-                System.out.println("Maior/Menor xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+                for (int i = 0; i < cont + 1; i++) {
 
-                revalidate();
-                repaint();
-                this.add(new AlgVarredura(qtdFaces, pontosPoX[cont], pontosPoY[cont], aux1, aux2, minX, minY, maxX, maxY));
-                repaint();
-                revalidate();
-                System.out.println("Final[" + pontosPoX[cont] + "," + pontosPoY[cont] + "," + aux1 + "," + aux2 + "]");
+                    if (i == 0) {
+                        revalidate();
 
-                cont = 0;
+                        this.add(new AlgVarredura(cont, aux1, aux2, pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
 
-//                System.out.println("----------------------------------");
-//                System.out.println("["+pontosPo[0]+","+pontosPo[1]+"]");
-//                System.out.println("["+pontosPo[2]+","+pontosPo[3]+"]");
-//                System.out.println("["+pontosPo[4]+","+pontosPo[5]+"]");
-//                System.out.println("["+pontosPo[0]+","+pontosPo[1]+"]");
-//                           System.out.println("----------------------------------");
+                        System.out.println("[" + aux1 + "," + aux2 + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+                        revalidate();
+                        aux3 = pontosPoX[1];
+                        aux4 = pontosPoY[1];
+                    }
+                    if ((i > 0) && (i + 1 < cont)) {
+
+                        revalidate();
+
+                        this.add(new AlgVarredura(cont, aux3, aux4, pontosPoX[i + 1], pontosPoY[i + 1], minX, minY, maxX, maxY));
+
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + pontosPoX[i + 1] + "," + pontosPoY[i + 1] + "]");
+
+                        revalidate();
+                        aux3 = pontosPoX[i + 1];
+                        aux4 = pontosPoY[i + 1];
+                    }
+                    if (i + 1 == cont) {
+                        revalidate();
+                        repaint();
+                        this.add(new AlgVarredura(cont, aux3, aux4, aux1, aux2, minX, minY, maxX, maxY));
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + aux1 + "," + aux2 + "]");
+                        repaint();
+                        revalidate();
+                        i = cont;
+                    }
+                }
+//                System.out.println("-------------------------------------------------------------------------------");
+//                System.out.println("[" + pontosPoX[0] + "," + pontosPoY[0] + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+//                System.out.println("[" + pontosPoX[1] + "," + pontosPoY[1] + ";" + pontosPoX[2] + "," + pontosPoY[2] + "]");
+//                System.out.println("[" + pontosPoX[2] + "," + pontosPoY[2] + ";" + pontosPoX[3] + "," + pontosPoY[3] + "]");
+//                System.out.println("[" + pontosPoX[3] + "," + pontosPoY[3] + ";" + pontosPoX[0] + "," + pontosPoY[0] + "]");
+//                System.out.println("Inicio xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+//                System.out.println("-------------------------------------------------------------------------------");
+                /////o que funciona
+
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[0], pontosPoY[0], pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[1], pontosPoY[1], pontosPoX[2], pontosPoY[2], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[2], pontosPoY[2], pontosPoX[3], pontosPoY[3], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[3], pontosPoY[3], pontosPoX[0], pontosPoY[0], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+                // System.out.println("[" + pontosPoX[4] + "," + pontosPoY[4] + ";" + pontosPoX[5] + "," + pontosPoY[5] + "]");
+                
             }
 
+  
         }
         if (opcao == 5) {
-            cont++;
-            System.out.println("cont: " + cont);
-            //pontos iniciais do poligono
-            if (cont == 1) {
-                pontosPoX[0] = e.getX() - 8;
-                pontosPoY[0] = e.getY() - 54;
-                aux1 = pontosPoX[0];
-                aux2 = pontosPoY[0];
+             if (cont < qtdFaces) {
 
-                // System.out.println("["+pontosPoX[0]+","+pontosPoY[0]+"]"); 
+                if (mouse == false) {
+                    System.out.println("1: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    System.out.println("2: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    mouse = false;
+                } else {
+                    mouse = true;
+                }
+
             }
-            if (cont == 2) {
+            if (cont == qtdFaces) {
+                System.out.println("cont: " + cont);
+                System.out.println("cont2: " + cont2);
 
-                pontosPoX[1] = aux1;
-                pontosPoY[1] = aux2;
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-
-                System.out.println("[" + aux1 + "," + aux2 + "," + pontosPoX[cont] + "," + pontosPoY[cont] + "]");
-                revalidate();
-                repaint();
-                this.add(new AlgBF(aux1, aux2, pontosPoX[cont], pontosPoY[cont], teste, teste, teste, teste));
-                repaint();
-                revalidate();
-                aux3 = pontosPoX[cont];
-                aux4 = pontosPoY[cont];
-            }
-            if (cont > 2) {
-
-                pontosPoX[cont] = aux3;
-                pontosPoY[cont] = aux4;
-                pontosPoX[cont + 1] = e.getX() - 8;
-                pontosPoY[cont + 1] = e.getY() - 54;
-
-                revalidate();
-                repaint();
-                this.add(new AlgBF(aux3, aux4, pontosPoX[cont + 1], pontosPoY[cont + 1], teste, teste, teste, teste));
-                repaint();
-                revalidate();
-                System.out.println("[" + aux3 + "," + aux4 + "," + pontosPoX[cont + 1] + "," + pontosPoY[cont + 1] + "]");
-                aux3 = pontosPoX[cont + 1];
-                aux4 = pontosPoY[cont + 1];
-            }
-
-            //ponto final do poligono
-            if (cont + 2 == qtdFaces) {
-                System.out.println("aquiioi");
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-                aux3 = pontosPoX[cont]; //xfinal
-                aux4 = pontosPoY[cont];//yfinal
-
-                for (int i = 0; i < cont + 2; i++) {
-
-                    //System.out.println("x,y["+pontosPoX[cont]+","+pontosPoY[cont]+"]");
-                    //verifica menor
-                    if (pontosPoX[i] < minX) {
+                for (int i = 0; i < cont; i++) {
+                    aux1 = pontosPoX[0];
+                    aux2 = pontosPoY[0];
+                    // minimo x1
+                    if (minX > pontosPoX[i]) {
                         minX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] < minY) {
+                    //minimo x2
+                    if (minX > pontosPoX[i]) {
+                        minX = pontosPoX[i];
+                    }
+
+                    //minimo y1
+                    if (minY > pontosPoY[i]) {
                         minY = pontosPoY[i];
                     }
-                    //verifica maior
-                    if (pontosPoX[i] > maxX) {
+                    //minimo y2
+                    if (minY > pontosPoY[i]) {
+                        minY = pontosPoY[i];
+                    }
+
+                    //max x1
+                    if (maxX < pontosPoX[i]) {
                         maxX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] > maxY) {
+                    //max x2
+                    if (maxX < pontosPoX[i]) {
+                        maxX = pontosPoX[i];
+                    }
+                    //max y1
+                    if (maxY < pontosPoY[i]) {
                         maxY = pontosPoY[i];
                     }
+                    //max y2
+                    if (maxY < pontosPoY[i]) {
+                        maxY = pontosPoY[i];
+                    }
+
                 }
-                System.out.println("Maior/Menor xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+                for (int i = 0; i < cont + 1; i++) {
 
-                revalidate();
-                repaint();
-                this.add(new AlgBF(pontosPoX[cont], pontosPoY[cont], aux1, aux2, minX, minY, maxX, maxY));
-                repaint();
-                revalidate();
-                System.out.println("Final[" + pontosPoX[cont] + "," + pontosPoY[cont] + "," + aux1 + "," + aux2 + "]");
+                    if (i == 0) {
+                        revalidate();
 
-                cont = 0;
+                        this.add(new AlgBF(cont, aux1, aux2, pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
 
+                        System.out.println("[" + aux1 + "," + aux2 + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+                        revalidate();
+                        aux3 = pontosPoX[1];
+                        aux4 = pontosPoY[1];
+                    }
+                    if ((i > 0) && (i + 1 < cont)) {
+
+                        revalidate();
+
+                        this.add(new AlgBF(cont, aux3, aux4, pontosPoX[i + 1], pontosPoY[i + 1], minX, minY, maxX, maxY));
+
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + pontosPoX[i + 1] + "," + pontosPoY[i + 1] + "]");
+
+                        revalidate();
+                        aux3 = pontosPoX[i + 1];
+                        aux4 = pontosPoY[i + 1];
+                    }
+                    if (i + 1 == cont) {
+                        revalidate();
+                        repaint();
+                        this.add(new AlgBF(cont, aux3, aux4, aux1, aux2, minX, minY, maxX, maxY));
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + aux1 + "," + aux2 + "]");
+                        repaint();
+                        revalidate();
+                        i = cont;
+                    }
+                }
+//                System.out.println("-------------------------------------------------------------------------------");
+//                System.out.println("[" + pontosPoX[0] + "," + pontosPoY[0] + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+//                System.out.println("[" + pontosPoX[1] + "," + pontosPoY[1] + ";" + pontosPoX[2] + "," + pontosPoY[2] + "]");
+//                System.out.println("[" + pontosPoX[2] + "," + pontosPoY[2] + ";" + pontosPoX[3] + "," + pontosPoY[3] + "]");
+//                System.out.println("[" + pontosPoX[3] + "," + pontosPoY[3] + ";" + pontosPoX[0] + "," + pontosPoY[0] + "]");
+//                System.out.println("Inicio xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+//                System.out.println("-------------------------------------------------------------------------------");
+                /////o que funciona
+
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[0], pontosPoY[0], pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[1], pontosPoY[1], pontosPoX[2], pontosPoY[2], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[2], pontosPoY[2], pontosPoX[3], pontosPoY[3], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[3], pontosPoY[3], pontosPoX[0], pontosPoY[0], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+                // System.out.println("[" + pontosPoX[4] + "," + pontosPoY[4] + ";" + pontosPoX[5] + "," + pontosPoY[5] + "]");
+                
             }
         }
         if (opcao == 6) {
-            cont++;
-            System.out.println("cont: " + cont);
-            //pontos iniciais do poligono
-            if (cont == 1) {
-                pontosPoX[0] = e.getX() - 8;
-                pontosPoY[0] = e.getY() - 54;
-                aux1 = pontosPoX[0];
-                aux2 = pontosPoY[0];
+           if (cont < qtdFaces) {
 
-                // System.out.println("["+pontosPoX[0]+","+pontosPoY[0]+"]"); 
+                if (mouse == false) {
+                    System.out.println("1: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    System.out.println("2: [" + e.getX() + "," + e.getY() + "]");
+                    pontosPoX[cont] = e.getX() - 8;
+                    pontosPoY[cont] = e.getY() - 54;
+                    cont++;
+                }
+                if (mouse == true) {
+                    mouse = false;
+                } else {
+                    mouse = true;
+                }
+
             }
-            if (cont == 2) {
+            if (cont == qtdFaces) {
+                System.out.println("cont: " + cont);
+                System.out.println("cont2: " + cont2);
 
-                pontosPoX[1] = aux1;
-                pontosPoY[1] = aux2;
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-                
-                if (pontosPoX[cont] < minX) {
-                        minX = pontosPoX[cont];
-                    }
-                    if (pontosPoY[cont] < minY) {
-                        minY = pontosPoY[cont];
-                    }
-                    //verifica maior
-                    if (pontosPoX[cont] > maxX) {
-                        maxX = pontosPoX[cont];
-                    }
-                    if (pontosPoY[cont] > maxY) {
-                        maxY = pontosPoY[cont];
-                    }
-
-                System.out.println("[" + aux1 + "," + aux2 + "," + pontosPoX[cont] + "," + pontosPoY[cont] + "]");
-                revalidate();
-                repaint();
-                this.add(new AlgAnaliseGeo(qtdFaces,aux1, aux2, pontosPoX[cont], pontosPoY[cont],minX, minY, maxX, maxY));
-                repaint();
-                revalidate();
-                aux3 = pontosPoX[cont];
-                aux4 = pontosPoY[cont];
-            }
-            if (cont > 2) {
-
-                pontosPoX[cont] = aux3;
-                pontosPoY[cont] = aux4;
-                pontosPoX[cont + 1] = e.getX() - 8;
-                pontosPoY[cont + 1] = e.getY() - 54;
-                if (pontosPoX[cont] < minX) {
-                        minX = pontosPoX[cont];
-                    }
-                    if (pontosPoY[cont] < minY) {
-                        minY = pontosPoY[cont];
-                    }
-                    //verifica maior
-                    if (pontosPoX[cont] > maxX) {
-                        maxX = pontosPoX[cont];
-                    }
-                    if (pontosPoY[cont] > maxY) {
-                        maxY = pontosPoY[cont];
-                    }
-
-                revalidate();
-                repaint();
-                this.add(new AlgAnaliseGeo(qtdFaces,aux3, aux4, pontosPoX[cont + 1], pontosPoY[cont + 1], minX, minY, maxX, maxY));
-                repaint();
-                revalidate();
-                System.out.println("[" + aux3 + "," + aux4 + "," + pontosPoX[cont + 1] + "," + pontosPoY[cont + 1] + "]");
-                aux3 = pontosPoX[cont + 1];
-                aux4 = pontosPoY[cont + 1];
-            }
-
-            //ponto final do poligono
-            if (cont + 2 == qtdFaces) {
-                System.out.println("aquiioi");
-                pontosPoX[cont] = e.getX() - 8;
-                pontosPoY[cont] = e.getY() - 54;
-                aux3 = pontosPoX[cont]; //xfinal
-                aux4 = pontosPoY[cont];//yfinal
-
-                for (int i = 0; i < cont + 2; i++) {
-
-                    //System.out.println("x,y["+pontosPoX[cont]+","+pontosPoY[cont]+"]");
-                    //verifica menor
-                    if (pontosPoX[i] < minX) {
+                for (int i = 0; i < cont; i++) {
+                    aux1 = pontosPoX[0];
+                    aux2 = pontosPoY[0];
+                    // minimo x1
+                    if (minX > pontosPoX[i]) {
                         minX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] < minY) {
+                    //minimo x2
+                    if (minX > pontosPoX[i]) {
+                        minX = pontosPoX[i];
+                    }
+
+                    //minimo y1
+                    if (minY > pontosPoY[i]) {
                         minY = pontosPoY[i];
                     }
-                    //verifica maior
-                    if (pontosPoX[i] > maxX) {
+                    //minimo y2
+                    if (minY > pontosPoY[i]) {
+                        minY = pontosPoY[i];
+                    }
+
+                    //max x1
+                    if (maxX < pontosPoX[i]) {
                         maxX = pontosPoX[i];
                     }
-                    if (pontosPoY[i] > maxY) {
+                    //max x2
+                    if (maxX < pontosPoX[i]) {
+                        maxX = pontosPoX[i];
+                    }
+                    //max y1
+                    if (maxY < pontosPoY[i]) {
                         maxY = pontosPoY[i];
                     }
+                    //max y2
+                    if (maxY < pontosPoY[i]) {
+                        maxY = pontosPoY[i];
+                    }
+
                 }
-                System.out.println("Maior/Menor xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+                for (int i = 0; i < cont + 1; i++) {
 
-                revalidate();
-                repaint();
-                this.add(new AlgAnaliseGeo(qtdFaces,pontosPoX[cont], pontosPoY[cont], aux1, aux2, minX, minY, maxX, maxY));
-                repaint();
-                revalidate();
-                System.out.println("Final[" + pontosPoX[cont] + "," + pontosPoY[cont] + "," + aux1 + "," + aux2 + "]");
+                    if (i == 0) {
+                        revalidate();
 
-                cont = 0;
+                        this.add(new AlgVarredura(cont, aux1, aux2, pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
 
+                        System.out.println("[" + aux1 + "," + aux2 + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+                        revalidate();
+                        aux3 = pontosPoX[1];
+                        aux4 = pontosPoY[1];
+                    }
+                    if ((i > 0) && (i + 1 < cont)) {
+
+                        revalidate();
+
+                        this.add(new AlgVarredura(cont, aux3, aux4, pontosPoX[i + 1], pontosPoY[i + 1], minX, minY, maxX, maxY));
+
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + pontosPoX[i + 1] + "," + pontosPoY[i + 1] + "]");
+
+                        revalidate();
+                        aux3 = pontosPoX[i + 1];
+                        aux4 = pontosPoY[i + 1];
+                    }
+                    if (i + 1 == cont) {
+                        revalidate();
+                        repaint();
+                        this.add(new AlgVarredura(cont, aux3, aux4, aux1, aux2, minX, minY, maxX, maxY));
+                        System.out.println("[" + aux3 + "," + aux4 + ";" + aux1 + "," + aux2 + "]");
+                        repaint();
+                        revalidate();
+                        i = cont;
+                    }
+                }
+//                System.out.println("-------------------------------------------------------------------------------");
+//                System.out.println("[" + pontosPoX[0] + "," + pontosPoY[0] + ";" + pontosPoX[1] + "," + pontosPoY[1] + "]");
+//                System.out.println("[" + pontosPoX[1] + "," + pontosPoY[1] + ";" + pontosPoX[2] + "," + pontosPoY[2] + "]");
+//                System.out.println("[" + pontosPoX[2] + "," + pontosPoY[2] + ";" + pontosPoX[3] + "," + pontosPoY[3] + "]");
+//                System.out.println("[" + pontosPoX[3] + "," + pontosPoY[3] + ";" + pontosPoX[0] + "," + pontosPoY[0] + "]");
+//                System.out.println("Inicio xMin =[" + minX + "]yMin =[" + minY + "]xMax =[" + maxX + "]yMax =[" + maxY + "]");
+//                System.out.println("-------------------------------------------------------------------------------");
+                /////o que funciona
+
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[0], pontosPoY[0], pontosPoX[1], pontosPoY[1], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[1], pontosPoY[1], pontosPoX[2], pontosPoY[2], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[2], pontosPoY[2], pontosPoX[3], pontosPoY[3], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+//                repaint();
+//                this.add(new AlgVarredura(cont, pontosPoX[3], pontosPoY[3], pontosPoX[0], pontosPoY[0], minX, minY, maxX, maxY));
+//                repaint();
+//                revalidate();
+                // System.out.println("[" + pontosPoX[4] + "," + pontosPoY[4] + ";" + pontosPoX[5] + "," + pontosPoY[5] + "]");
+                
             }
         }
         if (opcao == 7) {
-            xCirc = e.getX()-8;
-            yCirc = e.getY()-54;
+            xCirc = e.getX() - 8;
+            yCirc = e.getY() - 54;
             revalidate();
-            this.add(new AlgCircParametrica(cor,raio,xCirc,yCirc));
-            revalidate();
-        }
-        if(opcao == 8 ){
-            xCirc = e.getX()-8;
-            yCirc = e.getY()-54;
-            revalidate();
-            this.add(new AlgCircIncremental(cor,raio,xCirc,yCirc));
+            this.add(new AlgCircParametrica(cor, raio, xCirc, yCirc));
             revalidate();
         }
-        if( opcao == 9)
-        {
-            xCirc = e.getX()-8;
-            yCirc = e.getY()-54;
+        if (opcao == 8) {
+            xCirc = e.getX() - 8;
+            yCirc = e.getY() - 54;
             revalidate();
-          
-            this.add(new AlgCircBresenham(cor,raio,xCirc,yCirc));
+            this.add(new AlgCircIncremental(cor, raio, xCirc, yCirc));
+            revalidate();
+        }
+        if (opcao == 9) {
+            xCirc = e.getX() - 8;
+            yCirc = e.getY() - 54;
+            revalidate();
+
+            this.add(new AlgCircBresenham(cor, raio, xCirc, yCirc));
             revalidate();
         }
     }

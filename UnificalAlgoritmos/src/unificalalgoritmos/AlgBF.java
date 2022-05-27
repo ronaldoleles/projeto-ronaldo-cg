@@ -23,13 +23,12 @@ public class AlgBF extends JComponent {
     int maX;
     int maY;
 
-    public AlgBF(int x1, int y1, int x2, int y2, int minX, int minY, int maxX, int maxY) {
+    public AlgBF(int cont, int aux1, int aux2, int aux3, int aux4, int minX, int minY, int maxX, int maxY) {
         
-        px1 = x1;
-        py1 = y1;
-        px2 = x2;
-        py2 = y2;
-        
+       px1 = aux1;
+        py1 = aux2;
+        px2 = aux3;
+        py2 = aux4;
         miX = minX;
         miY = minY;
         maX = maxX;
@@ -43,19 +42,16 @@ public class AlgBF extends JComponent {
 
         g.setColor(Color.red);
         poligono(g);
-        if (miX != 1 && miY != 1 && maX != 1 && maY != 1) {
+        
             g.setColor(Color.blue);
            
-          //  preBF(g, maX, maY);
-        }
+            //preBF(g, maX-miX, maY-miY);
+        
     }
 
     public void poligono(Graphics g) {
-        repaint();
+        //repaint();
         algBres(g, px1, py1, px2, py2);
-        // algBres(g, px2, py2, px3, py3);
-        //  algBres(g, px3, py3, px4, py4);
-        // algBres(g, px4, py4, px1, py1);
     }
 
     public void preBF(Graphics g, int x, int y) {

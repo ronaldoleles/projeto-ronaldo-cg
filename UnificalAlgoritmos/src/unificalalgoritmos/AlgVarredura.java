@@ -16,31 +16,28 @@ public class AlgVarredura extends JComponent {
     int py1 = 0;
     int px2 = 0;
     int py2 = 0;
-    int miX;
-    int miY;
-    int maX;
-    int maY;
-    int aux1 = 0, aux2 = 0;
-    int cont;
+    int miX = 1200;
+    int miY = 1200;
+    int maX = 1;
+    int maY = 1;
+    int auX1 = 0, auX2 = 0;
+    int cOnt = 0, contAux = 0;
+    int pontosPoliX[];
+    int pontosPoliY[];
+    boolean mouse = false;
     //;
 //    int px1 = 50, px2 = 250, px3 = 210, px4 = 200,
 //            py1 = 50, py2 = 50, py3 = 200, py4 = 200;
 
-    public AlgVarredura(int qtdFaces, int x1, int y1, int x2, int y2, int minX, int minY, int maxX, int maxY) {
-        qtdfaces = qtdFaces;
-
-        px1 = x1;
-        py1 = y1;
-
-        px2 = x2;
-        py2 = y2;
-
+    public AlgVarredura(int cont, int aux1, int aux2, int aux3, int aux4, int minX, int minY, int maxX, int maxY) {
+        cOnt = cont;
+        px1 = aux1;
+        py1 = aux2;
+        px2 = aux3;
+        py2 = aux4;
         miX = minX;
-
         miY = minY;
-
         maX = maxX;
-
         maY = maxY;
 
         pixels = new int[1000][700];
@@ -50,14 +47,18 @@ public class AlgVarredura extends JComponent {
     @Override
     public void paint(Graphics g) {
         g.setColor(Color.red);
+        revalidate();
         poligono(g);
-        if (miX != 1 && miY != 1 && maX != 1 && maY != 1) {
+        
+
             g.setColor(Color.blue);
             System.out.println("PreVarred xMin =[" + miX + "]yMin =[" + miY + "]xMax =[" + maX + "]yMax =[" + maY + "]");
 
             preVarred(g, miX, miY, maX, maY);
-        }
+
+        
         g.setColor(Color.red);
+        revalidate();
         poligono(g);
     }
 
